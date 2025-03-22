@@ -51,10 +51,10 @@ public class TrinketItem extends Item implements Trinket {
 
 	@Override
 	public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
-//		ItemStack stack = user.getStackInHand(hand);
-//		if (equipItem(user, stack)) {
-//			return TypedActionResult.success(stack, world.isClient());
-//		}
+		ItemStack stack = user.getStackInHand(hand);
+		if (equipItem(user, stack)) {
+			return TypedActionResult.success(stack, world.isClient());
+		}
 		return super.use(world, user, hand);
 	}
 
@@ -63,31 +63,11 @@ public class TrinketItem extends Item implements Trinket {
 	}
 
 	public static boolean equipItem(LivingEntity user, ItemStack stack) {
-		Optional<TrinketComponent> optional = TrinketsApi.getTrinketComponent(user);
-		if (optional.isPresent()) {
-			TrinketComponent comp = optional.get();
-			for (Map<String, TrinketInventory> group : comp.getInventory().values()) {
-				for (TrinketInventory inv : group.values()) {
-					for (int i = 0; i < inv.size(); i++) {
-						if (inv.getStack(i).isEmpty()) {
-							SlotReference ref = new SlotReference(inv, i);
-							if (TrinketSlot.canInsert(stack, ref, user)) {
-								ItemStack newStack = stack.copy();
-								inv.setStack(i, newStack);
-								Trinket trinket = TrinketsApi.getTrinket(stack.getItem());
-								RegistryEntry<SoundEvent> soundEvent = trinket.getEquipSound(stack, ref, user);
-								if (!stack.isEmpty() && soundEvent != null) {
-								   user.emitGameEvent(GameEvent.EQUIP);
-								   user.playSound(soundEvent.value(), 1.0F, 1.0F);
-								}
-								stack.setCount(0);
-								return true;
-							}
-						}
-					}
-				}
-			}
+		var capability = user.accessoriesCapability();
+		if (capability != null) {
+			return capability.attemptToEquipAccessory(stack) != null;
 		}
+
 		return false;
 	}
 }

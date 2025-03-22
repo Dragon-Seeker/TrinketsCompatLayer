@@ -78,16 +78,16 @@ public class TrinketsMain implements ModInitializer, EntityComponentInitializer 
 //		resourceManagerHelper.registerReloadListener(EntitySlotLoader.SERVER);
 		ServerLifecycleEvents.END_DATA_PACK_RELOAD.register((server, serverResourceManager, success)
 				-> EntitySlotLoader.SERVER.sync(server.getPlayerManager().getPlayerList()));
-		UseItemCallback.EVENT.register((player, world, hand) -> {
-			ItemStack stack = player.getStackInHand(hand);
-			Trinket trinket = TrinketsApi.getTrinket(stack.getItem());
-			if (trinket.canEquipFromUse(stack, player)) {
-				if (TrinketItem.equipItem(player, stack)) {
-					return TypedActionResult.success(stack);
-				}
-			}
-			return TypedActionResult.pass(stack);
-		});
+//		UseItemCallback.EVENT.register((player, world, hand) -> {
+//			ItemStack stack = player.getStackInHand(hand);
+//			Trinket trinket = TrinketsApi.getTrinket(stack.getItem());
+//			if (trinket.canEquipFromUse(stack, player)) {
+//				if (TrinketItem.equipItem(player, stack)) {
+//					return TypedActionResult.success(stack);
+//				}
+//			}
+//			return TypedActionResult.pass(stack);
+//		});
 		Registry.register(Registries.DATA_COMPONENT_TYPE, Identifier.of(MOD_ID, "attribute_modifiers"), TrinketsAttributeModifiersComponent.TYPE);
 		PayloadTypeRegistry.playS2C().register(TrinketsNetwork.BREAK, BreakPayload.CODEC);
 		PayloadTypeRegistry.playS2C().register(TrinketsNetwork.SYNC_INVENTORY, SyncInventoryPayload.CODEC);
