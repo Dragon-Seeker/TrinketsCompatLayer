@@ -83,6 +83,8 @@ public class TrinketsApi {
 	 */
 	public static void registerTrinket(Item item, Trinket trinket) {
 		TRINKETS.put(item, trinket);
+
+		AccessoriesAPI.registerAccessory(item, new WrappedTrinket(trinket));
 	}
 
 	public static Trinket getTrinket(Item item) {
