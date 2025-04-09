@@ -28,6 +28,7 @@ import java.util.Map;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Multimap;
 
+import io.wispforest.accessories.api.attributes.SlotAttribute;
 import io.wispforest.tclayer.compat.WrappingTrinketsUtils;
 import net.minecraft.entity.attribute.EntityAttribute;
 import net.minecraft.entity.attribute.EntityAttributeModifier;
@@ -50,7 +51,7 @@ public class SlotAttributes {
 	}
 
 	public static Identifier getIdentifier(SlotReference ref) {
-		String key = ref.getId();
+		String key = ref.getId().replace(":", "-");
 		return CACHED_IDS.computeIfAbsent(key, Identifier::of);
 	}
 

@@ -86,7 +86,7 @@ public class WrappedTrinket implements Accessory {
         } else {
             var id = SlotAttributes.getIdentifier(ref.get());
 
-            this.trinket.getModifiers(stack, ref.get(), reference.entity(), SlotAttributes.getIdentifier(ref.get())).asMap()
+            this.trinket.getModifiers(stack, ref.get(), reference.entity(), id).asMap()
                     .forEach((attribute, modifiers) -> {
                         for (var modifier : modifiers) {
                             if(modifier.id().equals(id)) {
