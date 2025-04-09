@@ -142,7 +142,7 @@ public record WrappedTrinketComponent(LivingEntity entity) implements TrinketCom
 
     @Override
     public Set<TrinketInventory> getTrackingUpdates() {
-        return null;
+        return new HashSet<>();
     }
 
     @Override
