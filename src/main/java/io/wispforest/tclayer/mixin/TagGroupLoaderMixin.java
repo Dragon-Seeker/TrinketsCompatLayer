@@ -3,6 +3,7 @@ package io.wispforest.tclayer.mixin;
 import com.llamalad7.mixinextras.sugar.Share;
 import com.llamalad7.mixinextras.sugar.ref.LocalRef;
 import com.mojang.logging.LogUtils;
+import io.wispforest.accessories.Accessories;
 import io.wispforest.tclayer.TCLayer;
 import io.wispforest.tclayer.compat.WrappingTrinketsUtils;
 import io.wispforest.tclayer.compat.config.SlotIdRedirect;
@@ -71,6 +72,8 @@ public abstract class TagGroupLoaderMixin {
             map.computeIfAbsent(toLocation, location1 -> new ArrayList<>()).addAll(tagEntries);
         };
 
+        List<TagGroupLoader.TrackedEntry> ALL_TRINKET_ENTRIES = new ArrayList<>();
+
         Map.copyOf(map).forEach((location, entries) -> {
             var entriesCopy = new ArrayList<>(entries);
 
@@ -102,6 +105,8 @@ public abstract class TagGroupLoaderMixin {
                                 trinketToAccessoryCalls.put(accessoryRedirectTag, Triple.of(location, entriesCopy, (fromLocation, tagEntries) -> addCallback.accept(fromLocation, accessoryTag, tagEntries)));
                             }
                         });
+
+                ALL_TRINKET_ENTRIES.addAll(entries);
             } else if(location.getNamespace().equals("accessories")) {
                 var possibleGroups = WrappingTrinketsUtils.getGroupFromDefaultSlot(location.getPath());
 
@@ -130,6 +135,12 @@ public abstract class TagGroupLoaderMixin {
                 }
             }
         });
+
+        map.computeIfAbsent(TCLayer.ALL_TRINKET_ITEMS.id(), id -> new ArrayList<>())
+                .addAll(ALL_TRINKET_ENTRIES);
+
+        LOGGER.warn("Adding Entries to [{}]: \n     {}", TCLayer.ALL_TRINKET_ITEMS, ALL_TRINKET_ENTRIES);
+
     }
 
     @Inject(method = "loadTags", at = @At("TAIL"), order = 1100)

@@ -23,12 +23,12 @@ public abstract class AccessoriesAPIMixin {
         for (var entry : stack.getOrDefault(TrinketsAttributeModifiersComponent.TYPE, TrinketsAttributeModifiersComponent.DEFAULT).modifiers()) {
             if (entry.slot().isEmpty()) {
                 builder.addExclusive(entry.attribute(), entry.modifier());
-            } else if(entity != null) {
+            } else if (entity != null) {
                 var group = WrappingTrinketsUtils.getGroup(entity.getWorld(), slotName);
 
                 var slotId = WrappingTrinketsUtils.accessoriesToTrinkets_Group(group.name()) + "/" + WrappingTrinketsUtils.accessoriesToTrinkets_Slot(slotName);
 
-                if(entry.slot().get().equals(slotId)) builder.addExclusive(entry.attribute(), entry.modifier());
+                if (entry.slot().get().equals(slotId)) builder.addExclusive(entry.attribute(), entry.modifier());
             }
         }
     }
